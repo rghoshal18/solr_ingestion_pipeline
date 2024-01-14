@@ -111,4 +111,7 @@ services:
       restart: always
       ports:
         - "8983:8983"
-      command: solr-precreate patients; solr-precreate encounters; solr-precreate caregivers;
+      command: >
+        sh -c '
+            solr-precreate my_core
+        '
