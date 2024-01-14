@@ -38,7 +38,11 @@ services:
             - "8080:8080"
         command: webserver
         healthcheck:
-            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+            test:
+                [
+                    "CMD-SHELL",
+                    "[ -f /usr/local/airflow/airflow-webserver.pid ]"
+                ]
             interval: 30s
             timeout: 30s
             retries: 3
@@ -62,8 +66,8 @@ services:
             - webserver
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
-            - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg            
-        # Uncomment to include custom plugins
+            - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
+            # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         environment:
             - LOAD_EX=n
@@ -95,19 +99,19 @@ services:
         command: worker
 
     db:
-      image: mysql:8.0
-      command: --default-authentication-plugin=mysql_native_password
-      restart: always
-      ports:
-        - "3306:3306" 
-      environment:
-        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-        MYSQL_DATABASE: ${MYSQL_DATABASE}
-        MYSQL_USER: ${MYSQL_USER}
-        MYSQL_PASSWORD: ${MYSQL_PASSWORD}     
-      volumes:
-        - ./dump:/docker-entrypoint-initdb.d
-        
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+
     solr:
         image: solr:9.0
         restart: always
