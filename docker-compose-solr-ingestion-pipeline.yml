@@ -105,3 +105,10 @@ services:
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       ports:
         - "3306:3306"
+
+    solr:
+      image: solr:9.0
+      restart: always
+      ports:
+        - "8983:8983"
+      command: solr-precreate patients; solr-precreate encounters; solr-precreate caregivers;
