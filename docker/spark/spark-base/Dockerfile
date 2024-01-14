@@ -1,5 +1,4 @@
-FROM hive-base:latest
-LABEL maintainer="MarcLamberti"
+FROM openjdk:8-jdk-slim-buster
 
 # Defining useful environment variables
 ENV SPARK_VERSION=2.4.5
@@ -71,7 +70,7 @@ RUN wget --no-verbose https://archive.apache.org/dist/spark/spark-${SPARK_VERSIO
     rm -rf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}
 
 # Use Spark with Hive
-RUN cp ${HIVE_HOME}/conf/hive-site.xml $SPARK_HOME/conf
+# RUN cp ${HIVE_HOME}/conf/hive-site.xml $SPARK_HOME/conf
 
 RUN apt-get autoremove -yqq --purge && \
     apt-get clean && \
