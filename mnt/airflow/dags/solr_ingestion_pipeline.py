@@ -24,7 +24,7 @@ with DAG(DAG_NAME, schedule_interval="@weekly",
     register_load = MySqlOperator(
         task_id = "register_load",
         sql = '''
-            INSERT INTO load_metadata (llk,status) VALUES ('{{ macros.ds_format(ts_nodash, '%Y%m%dT%H%M%S', '%Y%m%d%H%M%S') }}','IN_PROGRESS')
+            INSERT INTO load_metadata (llk,status) VALUES ('{{ macros.ds_format(ts_nodash, '%Y%m%dT%H%M%S', '%Y%m%d') }}','IN_PROGRESS')
         ''',
         mysql_conn_id = "solr_pipeline_metadata_conn",
     )
@@ -35,26 +35,19 @@ with DAG(DAG_NAME, schedule_interval="@weekly",
         # executor=SequentialExecutor()
     )
 
-    # downloading_rates = PythonOperator(
-    #     task_id="downloading_rates",
-    #     python_callable=download_rates
-    # )
+    update_load = MySqlOperator(
+        task_id = "update_load",
+        sql = '''
+            UPDATE load_metadata SET STATUS = 'SUCCEEDED' WHERE load_id = 1
+        ''',
+        mysql_conn_id = "solr_pipeline_metadata_conn",
+    )
 
-    # forex_processing = SparkSubmitOperator(
-    #     task_id="forex_processing",
-    #     application="/usr/local/airflow/dags/scripts/forex_processing.py",
-    #     conn_id="spark_conn",
-    #     verbose=False
-    # )
+    send_email_notification = EmailOperator(
+        task_id="send_email_notification",
+        to="airflow_course@yopmail.com",
+        subject="Load Completetion Status",
+        html_content="Hi, The load is now completed for Load Log Key {{ macros.ds_format(ts_nodash, '%Y%m%dT%H%M%S', '%Y%m%d') }}"
+    )
 
-    # send_email_notification = EmailOperator(
-    #     task_id="send_email_notification",
-    #     to="airflow_course@yopmail.com",
-    #     subject="forex_data_pipeline",
-    #     html_content="<h3>forex_data_pipeline</h3>"
-    # )
-    
-    # downloading_rates >> forex_processing 
-    # forex_processing >> send_email_notification
-
-    register_load >> conn_ingestion
+    register_load >> conn_ingestion >> update_load >> send_email_notification
