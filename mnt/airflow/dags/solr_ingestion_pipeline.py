@@ -38,7 +38,7 @@ with DAG(DAG_NAME, schedule_interval="@weekly",
     update_load = MySqlOperator(
         task_id = "update_load",
         sql = '''
-            UPDATE load_metadata SET STATUS = 'SUCCEEDED' WHERE load_id = 1
+            UPDATE load_metadata SET STATUS = 'SUCCEEDED' WHERE id = 1
         ''',
         mysql_conn_id = "solr_pipeline_metadata_conn",
     )

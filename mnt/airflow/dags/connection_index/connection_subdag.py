@@ -40,8 +40,7 @@ def factory_subdag(parent_dag_name, child_dag_name, default_args):
                 task_id=f"ingest_connection_{connection_name}",
                 python_callable=transformations.ingest_data,
                 provide_context=True,
-                templates_dict={'name':connection_name,'base_path':connection_path},
-                params={'filename': 'log.csv'}
+                templates_dict={'name':connection_name,'base_path':connection_path}
             )
 
             update_connection = MySqlOperator(

@@ -98,7 +98,7 @@ services:
             - REDIS_PASSWORD=redispass
         command: worker
 
-    db:
+    mysql:
         image: mysql:8.0
         command: --default-authentication-plugin=mysql_native_password
         restart: always
