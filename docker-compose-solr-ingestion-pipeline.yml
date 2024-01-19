@@ -29,6 +29,13 @@ services:
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
             - REDIS_PASSWORD=redispass
+            - AIRFLOW__SMTP__SMTP_HOST=${AIRFLOW__SMTP__SMTP_HOST}
+            - AIRFLOW__SMTP__SMTP_STARTTLS=${AIRFLOW__SMTP__SMTP_STARTTLS}
+            - AIRFLOW__SMTP__SMTP_SSL=${AIRFLOW__SMTP__SMTP_SSL}
+            - AIRFLOW__SMTP__SMTP_USER=${AIRFLOW__SMTP__SMTP_USER}
+            - AIRFLOW__SMTP__SMTP_PASSWORD=${AIRFLOW__SMTP__SMTP_PASSWORD}
+            - AIRFLOW__SMTP__SMTP_PORT=${AIRFLOW__SMTP__SMTP_PORT}
+            - AIRFLOW__SMTP__SMTP_MAIL_FROM=${AIRFLOW__SMTP__SMTP_MAIL_FROM}
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
@@ -77,6 +84,13 @@ services:
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
             - REDIS_PASSWORD=redispass
+            - AIRFLOW__SMTP__SMTP_HOST=${AIRFLOW__SMTP__SMTP_HOST}
+            - AIRFLOW__SMTP__SMTP_STARTTLS=${AIRFLOW__SMTP__SMTP_STARTTLS}
+            - AIRFLOW__SMTP__SMTP_SSL=${AIRFLOW__SMTP__SMTP_SSL}
+            - AIRFLOW__SMTP__SMTP_USER=${AIRFLOW__SMTP__SMTP_USER}
+            - AIRFLOW__SMTP__SMTP_PASSWORD=${AIRFLOW__SMTP__SMTP_PASSWORD}
+            - AIRFLOW__SMTP__SMTP_PORT=${AIRFLOW__SMTP__SMTP_PORT}
+            - AIRFLOW__SMTP__SMTP_MAIL_FROM=${AIRFLOW__SMTP__SMTP_MAIL_FROM}
         command: scheduler
 
     worker:
@@ -96,6 +110,13 @@ services:
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
             - REDIS_PASSWORD=redispass
+            - AIRFLOW__SMTP__SMTP_HOST=${AIRFLOW__SMTP__SMTP_HOST}
+            - AIRFLOW__SMTP__SMTP_STARTTLS=${AIRFLOW__SMTP__SMTP_STARTTLS}
+            - AIRFLOW__SMTP__SMTP_SSL=${AIRFLOW__SMTP__SMTP_SSL}
+            - AIRFLOW__SMTP__SMTP_USER=${AIRFLOW__SMTP__SMTP_USER}
+            - AIRFLOW__SMTP__SMTP_PASSWORD=${AIRFLOW__SMTP__SMTP_PASSWORD}
+            - AIRFLOW__SMTP__SMTP_PORT=${AIRFLOW__SMTP__SMTP_PORT}
+            - AIRFLOW__SMTP__SMTP_MAIL_FROM=${AIRFLOW__SMTP__SMTP_MAIL_FROM}
         command: worker
 
     mysql:
