@@ -2,14 +2,14 @@ version: '0.1'
 services:
     redis:
         image: 'redis:5.0.5'
-        command: redis-server --requirepass redispass
+        command: redis-server --requirepass ${REDIS_PASSWORD}
 
     postgres:
         image: postgres:9.6
         environment:
-            - POSTGRES_USER=airflow
-            - POSTGRES_PASSWORD=airflow
-            - POSTGRES_DB=airflow
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
         # Uncomment these lines to persist data on the local filesystem.
         #     - PGDATA=/var/lib/postgresql/data/pgdata
         # volumes:
@@ -44,12 +44,12 @@ services:
             - mysql
         environment:
             - LOAD_EX=n
-            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-            - EXECUTOR=Celery
-            - POSTGRES_USER=airflow
-            - POSTGRES_PASSWORD=airflow
-            - POSTGRES_DB=airflow
-            - REDIS_PASSWORD=redispass
+            - FERNET_KEY=${FERNET_KEY}
+            - EXECUTOR=${EXECUTOR}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
             - AIRFLOW__SMTP__SMTP_HOST=${AIRFLOW__SMTP__SMTP_HOST}
             - AIRFLOW__SMTP__SMTP_STARTTLS=${AIRFLOW__SMTP__SMTP_STARTTLS}
             - AIRFLOW__SMTP__SMTP_SSL=${AIRFLOW__SMTP__SMTP_SSL}
@@ -82,8 +82,8 @@ services:
         depends_on:
             - redis
         environment:
-            - EXECUTOR=Celery
-            - REDIS_PASSWORD=redispass
+            - EXECUTOR=${EXECUTOR}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
         ports:
             - "5555:5555"
         command: flower
@@ -101,12 +101,12 @@ services:
             # - ./plugins:/usr/local/airflow/plugins
         environment:
             - LOAD_EX=n
-            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-            - EXECUTOR=Celery
-            - POSTGRES_USER=airflow
-            - POSTGRES_PASSWORD=airflow
-            - POSTGRES_DB=airflow
-            - REDIS_PASSWORD=redispass
+            - FERNET_KEY=${FERNET_KEY}
+            - EXECUTOR=${EXECUTOR}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
             - AIRFLOW__SMTP__SMTP_HOST=${AIRFLOW__SMTP__SMTP_HOST}
             - AIRFLOW__SMTP__SMTP_STARTTLS=${AIRFLOW__SMTP__SMTP_STARTTLS}
             - AIRFLOW__SMTP__SMTP_SSL=${AIRFLOW__SMTP__SMTP_SSL}
@@ -128,12 +128,12 @@ services:
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         environment:
-            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-            - EXECUTOR=Celery
-            - POSTGRES_USER=airflow
-            - POSTGRES_PASSWORD=airflow
-            - POSTGRES_DB=airflow
-            - REDIS_PASSWORD=redispass
+            - FERNET_KEY=${FERNET_KEY}
+            - EXECUTOR=${EXECUTOR}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
             - AIRFLOW__SMTP__SMTP_HOST=${AIRFLOW__SMTP__SMTP_HOST}
             - AIRFLOW__SMTP__SMTP_STARTTLS=${AIRFLOW__SMTP__SMTP_STARTTLS}
             - AIRFLOW__SMTP__SMTP_SSL=${AIRFLOW__SMTP__SMTP_SSL}

@@ -5,7 +5,7 @@ dir_ = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.join(dir_, '..')
 if module_path not in sys.path:
     sys.path.append(module_path)
-from scripts import transformations
+from scripts import etl
 
 from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -23,7 +23,7 @@ def factory_connection_subdag(parent_dag_name, child_dag_name, default_args):
 
         for _, row in connection_config_df.iterrows():
             connection_name = row['connection_name']
-            connection_path = row['base_path']
+            file_id = row['file_id']
 
             register_connection = MySqlOperator(
                 task_id=f"register_connection_{connection_name}",
@@ -38,9 +38,14 @@ def factory_connection_subdag(parent_dag_name, child_dag_name, default_args):
 
             ingest_connection = PythonOperator(
                 task_id=f"ingest_connection_{connection_name}",
-                python_callable=transformations.ingest_data,
+                python_callable=etl.ingest_data,
                 provide_context=True,
-                templates_dict={'name': connection_name, 'base_path': connection_path}
+                templates_dict={
+                    'connection_name': connection_name,
+                    'file_id': file_id,
+                    'load_log_key': "{{ macros.ds_format(ts_nodash, '%Y%m%dT%H%M%S', '%Y%m%d') }}",
+                    'load_id': "{{ ti.xcom_pull(dag_id="+parent_dag_name+", key='load_id') }}"
+                }
             )
 
             update_connection = MySqlOperator(

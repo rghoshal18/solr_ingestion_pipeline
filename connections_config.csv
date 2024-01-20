@@ -1,4 +1,4 @@
-connection_name,base_path
-patients,/data/patients.csv
-encounters,/data/encounters.csv
-caregivers,/data/caregivers.csv
+connection_name,file_id
+patients,1JOtX_bNdHKPaYGnj-GCt9HFwzoVX9dej
+encounters,1nCDztdVeeEB3QQqSjKqVIUC7dK21HCAt
+caregivers,1pCF0W8lRuMX8wCicEPzwJE9TPhTa0PYG

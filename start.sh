@@ -1,6 +1,4 @@
-docker-compose -f docker-compose-solr-ingestion-pipeline.yml up -d --scale worker=3
-#echo $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' solr_ingestion_pipeline-mysql-1)
-
+docker-compose -f docker-compose-solr-ingestion-pipeline.yml up -d --build --scale worker=3
 
 ## Creating Solr cores for the connections
 connections_config="./connections_config.csv"
