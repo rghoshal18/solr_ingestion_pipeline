@@ -28,10 +28,12 @@ def factory_subdag(parent_dag_name, child_dag_name, default_args):
 
             register_connection = MySqlOperator(
                 task_id=f"register_connection_{connection_name}",
-                sql=f'''
+                sql='''
                     INSERT INTO connection_metadata (load_id,connection_name,status) 
-                    VALUES (1,'{connection_name}','IN_PROGRESS')
-                ''',
+                    VALUES ({{ ti.xcom_pull(dag_id='''+parent_dag_name+''',key='load_id') }},
+                    '''
+                    +
+                    f"'{connection_name}','IN_PROGRESS')",
                 mysql_conn_id="solr_pipeline_metadata_conn",
             )
 
@@ -46,8 +48,10 @@ def factory_subdag(parent_dag_name, child_dag_name, default_args):
                 task_id=f"update_connection_{connection_name}",
                 sql=f'''
                     UPDATE connection_metadata set status = 'SUCCEEDED' WHERE
-                    connection_name = '{connection_name}' AND load_id = 1
-                ''',
+                    connection_name = '{connection_name}' AND 
+                    '''
+                    +
+                    "load_id = {{ ti.xcom_pull(dag_id="+parent_dag_name+", key='load_id') }}",
                 mysql_conn_id="solr_pipeline_metadata_conn",
             )
 
