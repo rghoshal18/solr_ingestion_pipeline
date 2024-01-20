@@ -3,8 +3,9 @@ from airflow.operators.mysql_operator import MySqlOperator
 from airflow.operators.email_operator import EmailOperator
 from airflow.operators.subdag_operator import SubDagOperator
 from airflow.operators.python_operator import PythonOperator
+from airflow.executors.celery_executor import CeleryExecutor
 from airflow.hooks.mysql_hook import MySqlHook
-from connection_index.connection_subdag import factory_subdag
+from connection_index.connection_subdag import factory_connection_subdag
 from datetime import datetime
 
 DAG_NAME = "solr_ingestion_pipeline"
@@ -52,8 +53,8 @@ with DAG(DAG_NAME, schedule_interval="@weekly",
 
     conn_ingestion = SubDagOperator(
         task_id='conn_ingestion',
-        subdag=factory_subdag(DAG_NAME, 'conn_ingestion', default_args),
-        # executor=SequentialExecutor()
+        subdag=factory_connection_subdag(DAG_NAME, 'conn_ingestion', default_args),
+        executor=CeleryExecutor()
     )
 
     update_load = MySqlOperator(

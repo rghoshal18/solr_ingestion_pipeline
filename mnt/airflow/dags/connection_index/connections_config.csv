@@ -1,4 +1,0 @@
-connection_name,base_path
-patients,/data/patients.csv
-encounters,/data/encounters
-caregivers,/data/caregivers

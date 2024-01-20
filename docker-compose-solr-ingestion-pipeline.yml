@@ -15,12 +15,33 @@ services:
         # volumes:
         #     - ./mnt/postgres:/var/lib/postgresql/data/pgdata
 
+    mysql:
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+
+    solr:
+        image: solr:9.0
+        restart: always
+        ports:
+            - "8983:8983"
+
     webserver:
         build: ./docker/airflow
         restart: always
         depends_on:
             - postgres
             - redis
+            - mysql
         environment:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
@@ -39,6 +60,7 @@ services:
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
+            - ./connections_config.csv:/usr/local/airflow/connections_config.csv
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         ports:
@@ -74,6 +96,7 @@ services:
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
+            - ./connections_config.csv:/usr/local/airflow/connections_config.csv
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         environment:
@@ -101,6 +124,7 @@ services:
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
+            - ./connections_config.csv:/usr/local/airflow/connections_config.csv
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         environment:
@@ -118,27 +142,3 @@ services:
             - AIRFLOW__SMTP__SMTP_PORT=${AIRFLOW__SMTP__SMTP_PORT}
             - AIRFLOW__SMTP__SMTP_MAIL_FROM=${AIRFLOW__SMTP__SMTP_MAIL_FROM}
         command: worker
-
-    mysql:
-        image: mysql:8.0
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
-        ports:
-            - "3306:3306"
-        environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        volumes:
-            - ./dump:/docker-entrypoint-initdb.d
-
-    solr:
-        image: solr:9.0
-        restart: always
-        ports:
-            - "8983:8983"
-        command: >
-            sh -c '
-                solr-precreate my_core
-            '

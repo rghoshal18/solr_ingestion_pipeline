@@ -1,8 +1,8 @@
 import os
 import sys
 
-dir = os.path.dirname(os.path.abspath(__file__))
-module_path = os.path.join(dir, '..')
+dir_ = os.path.dirname(os.path.abspath(__file__))
+module_path = os.path.join(dir_, '..')
 if module_path not in sys.path:
     sys.path.append(module_path)
 from scripts import transformations
@@ -13,13 +13,12 @@ from airflow.operators.mysql_operator import MySqlOperator
 import pandas as pd
 
 
-def factory_subdag(parent_dag_name, child_dag_name, default_args):
+def factory_connection_subdag(parent_dag_name, child_dag_name, default_args):
     with DAG(
             dag_id='%s.%s' % (parent_dag_name, child_dag_name),
             default_args=default_args
     ) as dag:
-        _dir = os.path.dirname(os.path.abspath(__file__))
-        _resource_path = os.path.join(_dir, "connections_config.csv")
+        _resource_path = "~/connections_config.csv"
         connection_config_df = pd.read_csv(_resource_path)
 
         for _, row in connection_config_df.iterrows():
