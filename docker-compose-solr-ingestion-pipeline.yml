@@ -60,7 +60,7 @@ services:
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
-            - ./connections_config.csv:/usr/local/airflow/connections_config.csv
+            - ./entities_config.csv:/usr/local/airflow/entities_config.csv
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         ports:
@@ -96,7 +96,7 @@ services:
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
-            - ./connections_config.csv:/usr/local/airflow/connections_config.csv
+            - ./entities_config.csv:/usr/local/airflow/entities_config.csv
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         environment:
@@ -124,7 +124,7 @@ services:
         volumes:
             - ./mnt/airflow/dags:/usr/local/airflow/dags
             - ./mnt/airflow/airflow.cfg:/usr/local/airflow/airflow.cfg
-            - ./connections_config.csv:/usr/local/airflow/connections_config.csv
+            - ./entities_config.csv:/usr/local/airflow/entities_config.csv
             # Uncomment to include custom plugins
             # - ./plugins:/usr/local/airflow/plugins
         environment:
