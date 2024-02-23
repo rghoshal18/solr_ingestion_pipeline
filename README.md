@@ -80,4 +80,4 @@ The specified versions are the tested ones. Other versions should also work.
    number_of_workers=4
    sh restart.sh ${number_of_workers}
    ```
-   Note: Everytime you restart your application, you would need to set sup mysql connection on Airflow Admin Page.
+   Note: Everytime you restart your application, you would need to setup mysql connection on Airflow Admin Page.
